@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('active');
         navbarMenu.classList.toggle('active');
         
-        // Disable scroll when menu is open
         if (navbarMenu.classList.contains('active')) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -15,8 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Dropdown functionality for mobile
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const dropdown = this.closest('.dropdown');
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+    
     // Close menu when clicking on a link (for mobile)
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
@@ -27,13 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Add active class to current page link
-    const currentLocation = window.location.pathname;
-    navLinks.forEach(link => {
-        if (link.getAttribute('href') === currentLocation) {
-            link.classList.add('active');
-        }
-    });
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
     
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
@@ -47,21 +53,45 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
+    // Desktop dropdown hover effect
+    if (window.innerWidth > 768) {
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', function() {
+                this.querySelector('.dropdown-menu').style.opacity = '1';
+                this.querySelector('.dropdown-menu').style.visibility = 'visible';
+                this.querySelector('.dropdown-menu').style.transform = 'translateY(0)';
+            });
             
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+            dropdown.addEventListener('mouseleave', function() {
+                this.querySelector('.dropdown-menu').style.opacity = '0';
+                this.querySelector('.dropdown-menu').style.visibility = 'hidden';
+                this.querySelector('.dropdown-menu').style.transform = 'translateY(10px)';
+            });
+        });
+    }
+    
+    // Highlight active link based on current URL
+    function highlightActiveLink() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link, .dropdown-link');
+        
+        navLinks.forEach(link => {
+            const linkPath = link.getAttribute('href');
             
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - document.querySelector('.navbar').offsetHeight,
-                    behavior: 'smooth'
-                });
+            // Check if the link matches the current path
+            if (linkPath === currentPath) {
+                link.classList.add('active');
+                
+                // If it's a dropdown item, also highlight its parent
+                if (link.classList.contains('dropdown-link')) {
+                    const dropdown = link.closest('.dropdown');
+                    if (dropdown) {
+                        dropdown.querySelector('.dropdown-toggle').classList.add('active');
+                    }
+                }
             }
         });
-    });
+    }
+    
+    highlightActiveLink();
 });

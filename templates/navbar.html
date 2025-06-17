@@ -6,13 +6,14 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-container">
             <a href="/inicio/" class="navbar-brand">
                 <i class="fas fa-rocket brand-icon"></i>
-                <span class="brand-text">About me</span>
+                <span class="brand-text">Mi Sitio</span>
             </a>
             <div id="mobile-menu" class="navbar-toggle">
                 <span class="toggle-bar"></span>
@@ -26,12 +27,67 @@
                         <span class="nav-text">Inicio</span>
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <i class="fas fa-users nav-icon"></i>
+                        <span class="nav-text">Sobre nosotros</span>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a href="/quienes-somos/" class="dropdown-link">
+                                <i class="fas fa-question-circle dropdown-icon"></i>
+                                <span>Quiénes somos</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/que-hacemos/" class="dropdown-link">
+                                <i class="fas fa-tasks dropdown-icon"></i>
+                                <span>Qué hacemos</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/hace-cuanto/" class="dropdown-link">
+                                <i class="fas fa-clock dropdown-icon"></i>
+                                <span>Hace cuánto estamos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="/contacto/" class="nav-link">
+                        <i class="fas fa-envelope nav-icon"></i>
+                        <span class="nav-text">Contacto</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
+
     <div class="main-content">
         {% block content %}{% endblock %}
     </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>&copy; <span id="current-year"></span> Mi Sitio Web. Todos los derechos reservados.</p>
+                <div class="footer-links">
+                    <a href="/politica-privacidad/">Política de privacidad</a>
+                    <a href="/terminos-condiciones/">Términos y condiciones</a>
+                    <a href="/contacto/">Contacto</a>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script src="/static/js/navbar.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
